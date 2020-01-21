@@ -1,8 +1,8 @@
 <?php
 
-use Daniser\EntityResolver\Facades\EntityResolver;
-use Daniser\EntityResolver\Exceptions\ResolverException;
 use Daniser\EntityResolver\Exceptions\EntityException;
+use Daniser\EntityResolver\Exceptions\ResolverException;
+use Daniser\EntityResolver\Facades\EntityResolver;
 
 if (! function_exists('resolve_entity')) {
     /**

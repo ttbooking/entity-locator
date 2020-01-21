@@ -2,8 +2,8 @@
 
 namespace Daniser\EntityResolver\Contracts;
 
-use Daniser\EntityResolver\Exceptions\ResolverException;
 use Daniser\EntityResolver\Exceptions\EntityException;
+use Daniser\EntityResolver\Exceptions\ResolverException;
 
 interface EntityResolver
 {
