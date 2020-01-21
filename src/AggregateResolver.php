@@ -30,11 +30,10 @@ class AggregateResolver implements Contracts\EntityResolver
             throw new Exceptions\EntityResolutionException("Unresolvable type: $type cannot be resolved.");
         }
 
-        /** @var Contracts\EntityResolver $resolver */
         if (! is_subclass_of($resolver = $this->resolvers[$type], Contracts\EntityResolver::class)) {
             throw new Exceptions\ResolverException("Invalid resolver: $resolver is not a resolver.");
         }
 
-        return $resolver->resolve($type, $id);
+        return $this->container->make($resolver)->resolve($type, $id);
     }
 }

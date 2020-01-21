@@ -26,7 +26,7 @@ class AliasResolver implements Contracts\EntityResolver
     {
         try {
             return $this->resolver->resolve($type, $id);
-        } catch (Exceptions\EntityTypeMismatchException $e) {
+        } catch (Exceptions\EntityException $e) {
             if (! array_key_exists($type, $this->aliases)) {
                 throw $e;
             }
