@@ -1,0 +1,54 @@
+{
+    "name": "daniser/entity-resolver",
+    "description": "Entity resolution library",
+    "type": "library",
+    "keywords": ["entity", "resolution"],
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/daniser/entity-resolver/issues",
+        "source": "https://github.com/daniser/entity-resolver"
+    },
+    "authors": [
+        {
+            "name": "Sergey Danilchenko",
+            "email": "daniser@mail.ru"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "illuminate/contracts": "~5.8.0|^6.0|^7.0",
+        "illuminate/support": "~5.8.0|^6.0|^7.0",
+        "illuminate/database": "~5.8.0|^6.0|^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5|^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Daniser\\EntityResolver\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Daniser\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Daniser\\EntityResolver\\EntityResolverServiceProvider"
+            ],
+            "aliases": {
+                "EntityResolver": "Daniser\\EntityResolver\\Facades\\EntityResolver"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
