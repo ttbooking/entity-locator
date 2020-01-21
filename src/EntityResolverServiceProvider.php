@@ -27,12 +27,12 @@ class EntityResolverServiceProvider extends ServiceProvider implements Deferrabl
 
         $this->app->singleton(Contracts\EntityResolver::class, function () {
             return $this->app->make(AggregateResolver::class, [
-                'resolvers' => $this->app['config']['entityResolver.resolvers'],
+                'resolvers' => $this->app['config']['entity-resolver.resolvers'],
             ]);
         });
 
         $this->app->extend(Contracts\EntityResolver::class, function (Contracts\EntityResolver $resolver) {
-            return new AliasResolver($resolver, $this->app['config']['entityResolver.aliases']);
+            return new AliasResolver($resolver, $this->app['config']['entity-resolver.aliases']);
         });
 
         $this->app->alias(Contracts\EntityResolver::class, 'entityResolver');
