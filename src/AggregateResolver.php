@@ -2,12 +2,13 @@
 
 namespace Daniser\EntityResolver;
 
-use Illuminate\Contracts\Container\Container;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class AggregateResolver implements Contracts\EntityResolver
 {
-    /** @var Container $container */
-    protected Container $container;
+    /** @var ContainerInterface $container */
+    protected ContainerInterface $container;
 
     /** @var string[] $resolvers */
     protected array $resolvers;
@@ -15,10 +16,10 @@ class AggregateResolver implements Contracts\EntityResolver
     /**
      * AggregateResolver constructor.
      *
-     * @param Container $container
+     * @param ContainerInterface $container
      * @param string[] $resolvers
      */
-    public function __construct(Container $container, array $resolvers = [])
+    public function __construct(ContainerInterface $container, array $resolvers = [])
     {
         $this->container = $container;
         $this->resolvers = $resolvers;
@@ -34,6 +35,10 @@ class AggregateResolver implements Contracts\EntityResolver
             throw new Exceptions\ResolverException("Invalid resolver: $resolver is not a resolver.");
         }
 
-        return $this->container->make($resolver)->resolve($type, $id);
+        try {
+            return $this->container->get($resolver)->resolve($type, $id);
+        } catch (NotFoundExceptionInterface $e) {
+            throw new Exceptions\ResolverException("Unreachable resolver: $resolver is uninstantiable.", $e->getCode(), $e);
+        }
     }
 }
