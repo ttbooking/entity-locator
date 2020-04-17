@@ -94,6 +94,7 @@ class AggregateResolver implements Contracts\EntityResolver
     {
         [$generic, $specific] = self::partition($resolvables, fn ($resolvable) => is_int($resolvable));
         $possible = array_intersect(array_merge([$type], class_parents($type), class_implements($type)), $specific);
+
         return array_merge($possible, $generic);
     }
 
