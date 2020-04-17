@@ -19,9 +19,9 @@ return [
         Illuminate\Database\Eloquent\Model::class => Daniser\EntityResolver\ModelResolver::class,
     ],
 
-    //'ancestral_ordering' => false,
-
     'enable_fallback' => true,
+
+    'ancestral_ordering' => true,
 
     'attribute_coherence' => true,
 

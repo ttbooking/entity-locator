@@ -25,15 +25,16 @@ class EntityResolverServiceProvider extends ServiceProvider implements Deferrabl
     {
         $this->mergeConfigFrom(__DIR__.'/../config/entity-resolver.php', 'entity-resolver');
 
-        $this->app->extend(ModelResolver::class, function (ModelResolver $resolver) {
-            return new CompositeKeyResolver($resolver, $this->app['config']['entity-resolver.composite_delimiter']);
-        });
-
         $this->app->singleton(Contracts\EntityResolver::class, function () {
             return $this->app->make(AggregateResolver::class, [
                 'resolvers' => $this->app['config']['entity-resolver.resolvers'],
                 'fallback' => $this->app['config']['entity-resolver.enable_fallback'],
+                'ancestralOrdering' => $this->app['config']['entity-resolver.ancestral_ordering'],
             ]);
+        });
+
+        $this->app->extend(ModelResolver::class, function (ModelResolver $resolver) {
+            return new CompositeKeyResolver($resolver, $this->app['config']['entity-resolver.composite_delimiter']);
         });
 
         $this->app->extend(Contracts\EntityResolver::class, function (Contracts\EntityResolver $resolver) {
