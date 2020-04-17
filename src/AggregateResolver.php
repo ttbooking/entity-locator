@@ -2,43 +2,64 @@
 
 namespace Daniser\EntityResolver;
 
-use Psr\Container\ContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 class AggregateResolver implements Contracts\EntityResolver
 {
-    /** @var ContainerInterface $container */
-    protected ContainerInterface $container;
+    /** @var Container $container */
+    protected Container $container;
 
-    /** @var string[] $resolvers */
+    /** @var array $resolvers */
     protected array $resolvers;
+
+    /** @var bool $fallback */
+    protected bool $fallback;
 
     /**
      * AggregateResolver constructor.
      *
-     * @param ContainerInterface $container
-     * @param string[] $resolvers
+     * @param Container $container
+     * @param array $resolvers
+     * @param bool $fallback
      */
-    public function __construct(ContainerInterface $container, array $resolvers = [])
+    public function __construct(Container $container, array $resolvers = [], bool $fallback = true)
     {
         $this->container = $container;
         $this->resolvers = $resolvers;
+        $this->fallback = $fallback;
     }
 
     public function resolve(string $type, $id): object
     {
-        if (! array_key_exists($type, $this->resolvers)) {
-            throw new Exceptions\EntityResolutionException("Unresolvable type: $type cannot be resolved.");
+        $possible = array_intersect(
+            array_merge([$type], class_parents($type), class_implements($type)),
+            array_keys($this->resolvers)
+        );
+        if (! $possible) {
+            throw new Exceptions\EntityTypeMismatchException("Unresolvable type: $type cannot be resolved.");
         }
 
-        if (! is_subclass_of($resolver = $this->resolvers[$type], Contracts\EntityResolver::class)) {
+        beginning:
+        if (! $actual = array_shift($possible)) {
+            throw new Exceptions\EntityNotFoundException("$type not found.");
+        }
+
+        [$resolver, $parameters] = ((array) $this->resolvers[$actual]) + [1 => []];
+
+        if (! is_subclass_of($resolver, Contracts\EntityResolver::class)) {
             throw new Exceptions\ResolverException("Invalid resolver: $resolver is not a resolver.");
         }
 
         try {
-            return $this->container->get($resolver)->resolve($type, $id);
-        } catch (NotFoundExceptionInterface $e) {
+            return $this->container->make($resolver, $parameters)->resolve($type, $id);
+        } catch (BindingResolutionException $e) {
             throw new Exceptions\ResolverException("Unreachable resolver: $resolver is uninstantiable.", $e->getCode(), $e);
+        } catch (Exceptions\EntityNotFoundException $e) {
+            if ($this->fallback) {
+                goto beginning;
+            }
+            throw $e;
         }
     }
 }
