@@ -25,14 +25,7 @@ class EntityResolverServiceProvider extends ServiceProvider implements Deferrabl
     {
         $this->mergeConfigFrom(__DIR__.'/../config/entity-resolver.php', 'entity-resolver');
 
-        /*$this->app->bind(ConfigurableModelResolver::class, function () {
-            return new ConfigurableModelResolver(
-                $this->app['config']['entity-resolver.models'],
-                $this->app['config']['entity-resolver.composite_delimiter']
-            );
-        });*/
-
-        $this->app->extend(ConfigurableModelResolver::class, function (ConfigurableModelResolver $resolver) {
+        $this->app->extend(ModelResolver::class, function (ModelResolver $resolver) {
             return new CompositeKeyResolver($resolver, $this->app['config']['entity-resolver.composite_delimiter']);
         });
 
