@@ -17,6 +17,8 @@ return [
         App\User::class => [Daniser\EntityResolver\ModelResolver::class, ['columns' => 'email']],
 
         Illuminate\Database\Eloquent\Model::class => Daniser\EntityResolver\ModelResolver::class,
+
+        Daniser\EntityResolver\ValidatingResolver::class,
     ],
 
     'enable_fallback' => true,
