@@ -42,7 +42,7 @@ class ModelResolver implements Contracts\EntityResolver
         try {
             return $type::where($attributes)->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            throw new Exceptions\EntityNotFoundException("Model $type with given attributes not found.", 0, $e);
+            throw new Exceptions\EntityNotFoundException("Model $type with given attributes not found.", $e->getCode(), $e);
         }
     }
 }
