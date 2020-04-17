@@ -4,10 +4,10 @@ namespace Daniser\EntityResolver;
 
 class CompositeKeyResolver implements Contracts\EntityResolver
 {
-    /** @var Contracts\EntityResolver $resolver */
+    /** @var Contracts\EntityResolver */
     protected Contracts\EntityResolver $resolver;
 
-    /** @var string $delimiter */
+    /** @var string */
     protected string $delimiter;
 
     /**

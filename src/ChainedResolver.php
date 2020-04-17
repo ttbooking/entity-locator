@@ -4,7 +4,7 @@ namespace Daniser\EntityResolver;
 
 class ChainedResolver implements Contracts\EntityResolver
 {
-    /** @var string[] $resolvers */
+    /** @var string[] */
     protected array $resolvers;
 
     /**
@@ -19,6 +19,5 @@ class ChainedResolver implements Contracts\EntityResolver
 
     public function resolve(string $type, $id): object
     {
-
     }
 }

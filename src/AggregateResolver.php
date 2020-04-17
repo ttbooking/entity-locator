@@ -2,18 +2,18 @@
 
 namespace Daniser\EntityResolver;
 
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Container\Container;
 
 class AggregateResolver implements Contracts\EntityResolver
 {
-    /** @var Container $container */
+    /** @var Container */
     protected Container $container;
 
-    /** @var array $resolvers */
+    /** @var array */
     protected array $resolvers;
 
-    /** @var bool $fallback */
+    /** @var bool */
     protected bool $fallback;
 
     /**

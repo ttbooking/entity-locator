@@ -8,10 +8,10 @@ use Illuminate\Support\Arr;
 
 class ConfigurableModelResolver implements Contracts\EntityResolver
 {
-    /** @var string $model */
+    /** @var string */
     protected string $model;
 
-    /** @var string[] $columns */
+    /** @var string[] */
     protected array $columns;
 
     /**

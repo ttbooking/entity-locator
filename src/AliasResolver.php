@@ -4,10 +4,10 @@ namespace Daniser\EntityResolver;
 
 class AliasResolver implements Contracts\EntityResolver
 {
-    /** @var Contracts\EntityResolver $resolver */
+    /** @var Contracts\EntityResolver */
     protected Contracts\EntityResolver $resolver;
 
-    /** @var string[] $aliases */
+    /** @var string[] */
     protected array $aliases;
 
     /**
