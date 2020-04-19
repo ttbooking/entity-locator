@@ -2,6 +2,7 @@
 
 namespace Daniser\EntityResolver;
 
+use ErrorException;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
 
@@ -85,7 +86,7 @@ class AggregateResolver implements Contracts\EntityResolver
     {
         return $ordered
             ? static::orderedPossibleResolvables($resolvables, $type)
-            : array_filter($resolvables, fn ($resolvable) => is_a($type, $resolvable, true) || is_int($resolvable));
+            : array_filter($resolvables, fn ($resolvable) => is_int($resolvable) || is_a($type, $resolvable, true));
     }
 
     /**
@@ -97,7 +98,12 @@ class AggregateResolver implements Contracts\EntityResolver
     protected static function orderedPossibleResolvables(array $resolvables, string $type): array
     {
         [$generic, $specific] = self::partition($resolvables, fn ($resolvable) => is_int($resolvable));
-        $possible = array_intersect(array_merge([$type], class_parents($type), class_implements($type)), $specific);
+
+        try {
+            $possible = array_intersect(array_merge([$type], class_parents($type), class_implements($type)), $specific);
+        } catch (ErrorException $e) {
+            $possible = [];
+        }
 
         return array_merge($possible, $generic);
     }
