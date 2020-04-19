@@ -9,35 +9,36 @@ use Illuminate\Support\Arr;
 class ModelResolver implements Contracts\EntityResolver
 {
     /** @var string */
-    protected string $model;
+    protected string $modelClass;
 
     /** @var string[] */
     protected array $columns;
 
     /**
-     * ConfigurableModelResolver constructor.
+     * ModelResolver constructor.
      *
-     * @param string $model
+     * @param string $entityClass
      * @param string|string[] $columns
      */
-    public function __construct(string $model, $columns = [])
+    public function __construct(string $entityClass = Model::class, $columns = [])
     {
-        if (! is_subclass_of($model, Model::class)) {
-            throw new Exceptions\ResolverException("Cannot instantiate resolver: $model must be an instance of Model.");
+        if (! is_a($entityClass, Model::class, true)) {
+            throw new Exceptions\ResolverException("Cannot instantiate resolver: $entityClass must be an instance of Model.");
         }
 
-        $this->model = $model;
-        $this->columns = $columns ? (array) $columns : [(new $model)->getKeyName()];
+        $this->modelClass = $entityClass;
+        $this->columns = (array) $columns;
     }
 
     public function resolve(string $type, $id): Model
     {
-        if (! is_a($type, $this->model, true)) {
+        if (! is_a($type, $this->modelClass, true)) {
             throw new Exceptions\EntityTypeMismatchException("Invalid type: $type cannot be resolved.");
         }
 
         $attributes = (array) $id;
-        $attributes = Arr::isAssoc($attributes) ? $attributes : array_combine($this->columns, $attributes);
+        $attributes = Arr::isAssoc($attributes) ? $attributes
+            : array_combine($this->columns ?: [(new $type)->getKeyName()], $attributes);
 
         try {
             return $type::where($attributes)->firstOrFail();

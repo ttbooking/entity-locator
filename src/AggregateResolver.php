@@ -48,11 +48,12 @@ class AggregateResolver implements Contracts\EntityResolver
         }
 
         beginning:
-        if (! $actual = array_shift($possible)) {
+        if (! $entityClass = array_shift($possible)) {
             throw new Exceptions\EntityNotFoundException("$type not found.");
         }
 
-        [$resolver, $parameters] = ((array) $this->resolvers[$actual]) + [1 => []];
+        [$resolver, $parameters] = ((array) $this->resolvers[$entityClass]) + [1 => []];
+        $parameters += compact('entityClass');
 
         if (! is_subclass_of($resolver, Contracts\EntityResolver::class)) {
             throw new Exceptions\ResolverException("Invalid resolver: $resolver is not a resolver.");
