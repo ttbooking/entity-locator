@@ -3,6 +3,7 @@
 namespace Daniser\EntityResolver;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class EntityResolverServiceProvider extends ServiceProvider implements DeferrableProvider
@@ -21,6 +22,11 @@ class EntityResolverServiceProvider extends ServiceProvider implements Deferrabl
         }
     }
 
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/entity-resolver.php', 'entity-resolver');
@@ -38,12 +44,24 @@ class EntityResolverServiceProvider extends ServiceProvider implements Deferrabl
         });
 
         $this->app->extend(Contracts\EntityResolver::class, function (Contracts\EntityResolver $resolver) {
-            return new AliasResolver($resolver, $this->app['config']['entity-resolver.aliases']);
+            $aliases = $this->app['config']['entity-resolver.aliases'];
+            if ($this->app['config']['entity-resolver.merge_with_morph_map']) {
+                $override = $this->app['config']['entity-resolver.override_morph_map'];
+                $morphMap = Relation::morphMap();
+                $aliases = $override ? $aliases + $morphMap : $morphMap + $aliases;
+            }
+
+            return new AliasResolver($resolver, $aliases);
         });
 
         $this->app->alias(Contracts\EntityResolver::class, 'entityResolver');
     }
 
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
     public function provides()
     {
         return [Contracts\EntityResolver::class, 'entityResolver'];

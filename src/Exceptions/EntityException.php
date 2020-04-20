@@ -4,6 +4,6 @@ namespace Daniser\EntityResolver\Exceptions;
 
 use RuntimeException;
 
-class EntityException extends RuntimeException
+abstract class EntityException extends RuntimeException
 {
 }
