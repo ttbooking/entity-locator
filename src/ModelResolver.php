@@ -2,6 +2,7 @@
 
 namespace Daniser\EntityResolver;
 
+use ErrorException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
@@ -37,12 +38,13 @@ class ModelResolver implements Contracts\EntityResolver
         }
 
         $attributes = (array) $id;
-        $attributes = Arr::isAssoc($attributes) ? $attributes
-            : array_combine($this->columns ?: [(new $type)->getKeyName()], $attributes);
 
         try {
+            $attributes = Arr::isAssoc($attributes) ? $attributes
+                : array_combine($this->columns ?: [(new $type)->getKeyName()], $attributes);
+
             return $type::where($attributes)->firstOrFail();
-        } catch (ModelNotFoundException $e) {
+        } catch (ErrorException | ModelNotFoundException $e) {
             throw new Exceptions\EntityNotFoundException("Model $type with given attributes not found.", $e->getCode(), $e);
         }
     }
