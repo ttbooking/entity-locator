@@ -4,6 +4,6 @@ namespace TTBooking\EntityLocator\Exceptions;
 
 use RuntimeException;
 
-abstract class EntityException extends RuntimeException
+class LocatorException extends RuntimeException
 {
 }

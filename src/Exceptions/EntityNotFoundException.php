@@ -1,6 +1,6 @@
 <?php
 
-namespace Daniser\EntityResolver\Exceptions;
+namespace TTBooking\EntityLocator\Exceptions;
 
 class EntityNotFoundException extends EntityException
 {

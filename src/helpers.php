@@ -1,34 +1,34 @@
 <?php
 
-use Daniser\EntityResolver\AggregateResolver;
-use Daniser\EntityResolver\Exceptions\EntityException;
-use Daniser\EntityResolver\Exceptions\ResolverException;
-use Daniser\EntityResolver\Facades\EntityResolver;
+use TTBooking\EntityLocator\AggregateLocator;
+use TTBooking\EntityLocator\Exceptions\EntityException;
+use TTBooking\EntityLocator\Exceptions\LocatorException;
+use TTBooking\EntityLocator\Facades\EntityLocator;
 
-if (! function_exists('resolver_array')) {
+if (! function_exists('locator_array')) {
     /**
-     * @param mixed ...$resolvers
+     * @param mixed ...$locators
      *
      * @return array
      */
-    function resolver_array(...$resolvers): array
+    function locator_array(...$locators): array
     {
-        return [AggregateResolver::class, compact('resolvers')];
+        return [AggregateLocator::class, compact('locators')];
     }
 }
 
-if (! function_exists('resolve_entity')) {
+if (! function_exists('locate_entity')) {
     /**
      * @param string $type
      * @param mixed $id
      *
-     * @throws ResolverException
+     * @throws LocatorException
      * @throws EntityException
      *
      * @return object
      */
-    function resolve_entity(string $type, $id): object
+    function locate_entity(string $type, $id): object
     {
-        return EntityResolver::resolve($type, $id);
+        return EntityLocator::locate($type, $id);
     }
 }

@@ -1,17 +1,17 @@
 {
-    "name": "daniser/entity-resolver",
+    "name": "ttbooking/entity-locator",
     "description": "Entity resolution library",
     "type": "library",
-    "keywords": ["entity", "resolution"],
+    "keywords": ["entity", "location", "resolution"],
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/daniser/entity-resolver/issues",
-        "source": "https://github.com/daniser/entity-resolver"
+        "issues": "https://github.com/ttbooking/entity-locator/issues",
+        "source": "https://github.com/ttbooking/entity-locator"
     },
     "authors": [
         {
             "name": "Sergey Danilchenko",
-            "email": "daniser@mail.ru"
+            "email": "s.danilchenko@ttbooking.ru"
         }
     ],
     "require": {
@@ -26,7 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Daniser\\EntityResolver\\": "src/"
+            "TTBooking\\EntityLocator\\": "src/"
         },
         "files": [
             "src/helpers.php"
@@ -34,16 +34,16 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Daniser\\Tests\\": "tests/"
+            "TTBooking\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Daniser\\EntityResolver\\EntityResolverServiceProvider"
+                "TTBooking\\EntityLocator\\EntityLocatorServiceProvider"
             ],
             "aliases": {
-                "EntityResolver": "Daniser\\EntityResolver\\Facades\\EntityResolver"
+                "EntityLocator": "TTBooking\\EntityLocator\\Facades\\EntityLocator"
             }
         }
     },

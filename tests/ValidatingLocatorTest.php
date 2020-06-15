@@ -1,27 +1,27 @@
 <?php
 
-namespace Daniser\Tests;
+namespace TTBooking\Tests;
 
-use Daniser\EntityResolver\Exceptions\EntityNotFoundException;
-use Daniser\EntityResolver\ValidatingResolver;
+use TTBooking\EntityLocator\Exceptions\EntityNotFoundException;
+use TTBooking\EntityLocator\ValidatingLocator;
 use PHPUnit\Framework\TestCase;
 
-class ValidatingResolverTest extends TestCase
+class ValidatingLocatorTest extends TestCase
 {
     public function testReturnsSameEntity()
     {
-        $resolver = new ValidatingResolver;
+        $locator = new ValidatingLocator;
         $mock = $this->getMockBuilder('TestClass')->getMock();
-        $result = $resolver->resolve(get_class($mock), $mock);
+        $result = $locator->locate(get_class($mock), $mock);
         $this->assertSame($result, $mock);
     }
 
     public function testFailsOnWrongInstance()
     {
-        $resolver = new ValidatingResolver;
+        $locator = new ValidatingLocator;
         $this->expectException(EntityNotFoundException::class);
         $class = $this->getMockClass('TestClass');
         $mock = $this->getMockBuilder('WrongClass')->getMock();
-        $resolver->resolve($class, $mock);
+        $locator->locate($class, $mock);
     }
 }

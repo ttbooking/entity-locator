@@ -1,18 +1,18 @@
 <?php
 
-namespace Daniser\EntityResolver;
+namespace TTBooking\EntityLocator;
 
 use ErrorException;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
 
-class AggregateResolver implements Contracts\EntityResolver
+class AggregateLocator implements Contracts\EntityLocator
 {
     /** @var Container */
     protected Container $container;
 
     /** @var array */
-    protected array $resolvers;
+    protected array $locators;
 
     /** @var bool */
     protected bool $fallback;
@@ -21,31 +21,31 @@ class AggregateResolver implements Contracts\EntityResolver
     protected bool $ancestralOrdering;
 
     /**
-     * AggregateResolver constructor.
+     * AggregateLocator constructor.
      *
      * @param Container $container
-     * @param array $resolvers
+     * @param array $locators
      * @param bool $fallback
      * @param bool $ancestralOrdering
      */
     public function __construct(
         Container $container,
-        array $resolvers = [],
+        array $locators = [],
         bool $fallback = true,
         bool $ancestralOrdering = false
     ) {
         $this->container = $container;
-        $this->resolvers = $resolvers;
+        $this->locators = $locators;
         $this->fallback = $fallback;
         $this->ancestralOrdering = $ancestralOrdering;
     }
 
-    public function resolve(string $type, $id): object
+    public function locate(string $type, $id): object
     {
-        $possible = static::possibleResolvables(array_keys($this->resolvers), $type, $this->ancestralOrdering);
+        $possible = static::possibleLocatables(array_keys($this->locators), $type, $this->ancestralOrdering);
 
         if (! $possible) {
-            throw new Exceptions\EntityTypeMismatchException("Unresolvable type: $type cannot be resolved.");
+            throw new Exceptions\EntityTypeMismatchException("Unresolvable type: $type cannot be located.");
         }
 
         beginning:
@@ -53,10 +53,10 @@ class AggregateResolver implements Contracts\EntityResolver
             throw new Exceptions\EntityNotFoundException("$type not found.");
         }
 
-        [$resolver, $parameters] = ((array) $this->resolvers[$actual]) + [1 => []];
+        [$locator, $parameters] = ((array) $this->locators[$actual]) + [1 => []];
 
-        if (! is_subclass_of($resolver, Contracts\EntityResolver::class)) {
-            throw new Exceptions\ResolverException("Invalid resolver: $resolver is not a resolver.");
+        if (! is_subclass_of($locator, Contracts\EntityLocator::class)) {
+            throw new Exceptions\LocatorException("Invalid locator: $locator is not a locator.");
         }
 
         if (! is_int($actual)) {
@@ -64,9 +64,9 @@ class AggregateResolver implements Contracts\EntityResolver
         }
 
         try {
-            return $this->container->make($resolver, $parameters)->resolve($type, $id);
+            return $this->container->make($locator, $parameters)->locate($type, $id);
         } catch (BindingResolutionException $e) {
-            throw new Exceptions\ResolverException("Unreachable resolver: $resolver is uninstantiable.", $e->getCode(), $e);
+            throw new Exceptions\LocatorException("Unreachable locator: $locator is uninstantiable.", $e->getCode(), $e);
         } catch (Exceptions\EntityNotFoundException $e) {
             if ($this->fallback) {
                 goto beginning;
@@ -76,28 +76,28 @@ class AggregateResolver implements Contracts\EntityResolver
     }
 
     /**
-     * @param array $resolvables
+     * @param array $locatables
      * @param string $type
      * @param bool $ordered
      *
      * @return array
      */
-    protected static function possibleResolvables(array $resolvables, string $type, bool $ordered = false): array
+    protected static function possibleLocatables(array $locatables, string $type, bool $ordered = false): array
     {
         return $ordered
-            ? static::orderedPossibleResolvables($resolvables, $type)
-            : array_filter($resolvables, fn ($resolvable) => is_int($resolvable) || is_a($type, $resolvable, true));
+            ? static::orderedPossibleLocatables($locatables, $type)
+            : array_filter($locatables, fn ($locatable) => is_int($locatable) || is_a($type, $locatable, true));
     }
 
     /**
-     * @param array $resolvables
+     * @param array $locatables
      * @param string $type
      *
      * @return array
      */
-    protected static function orderedPossibleResolvables(array $resolvables, string $type): array
+    protected static function orderedPossibleLocatables(array $locatables, string $type): array
     {
-        [$generic, $specific] = self::partition($resolvables, fn ($resolvable) => is_int($resolvable));
+        [$generic, $specific] = self::partition($locatables, fn ($locatable) => is_int($locatable));
 
         try {
             $possible = array_intersect(array_merge([$type], class_parents($type), class_implements($type)), $specific);

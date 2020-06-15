@@ -1,13 +1,13 @@
 <?php
 
-namespace Daniser\EntityResolver;
+namespace TTBooking\EntityLocator;
 
 use ErrorException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 
-class ModelResolver implements Contracts\EntityResolver
+class ModelLocator implements Contracts\EntityLocator
 {
     /** @var string */
     protected string $modelClass;
@@ -16,7 +16,7 @@ class ModelResolver implements Contracts\EntityResolver
     protected array $columns;
 
     /**
-     * ModelResolver constructor.
+     * ModelLocator constructor.
      *
      * @param string $entityClass
      * @param string|string[] $columns
@@ -24,17 +24,17 @@ class ModelResolver implements Contracts\EntityResolver
     public function __construct(string $entityClass = Model::class, $columns = [])
     {
         if (! is_a($entityClass, Model::class, true)) {
-            throw new Exceptions\ResolverException("Cannot instantiate resolver: $entityClass must be an instance of Model.");
+            throw new Exceptions\LocatorException("Cannot instantiate locator: $entityClass must be an instance of Model.");
         }
 
         $this->modelClass = $entityClass;
         $this->columns = (array) $columns;
     }
 
-    public function resolve(string $type, $id): Model
+    public function locate(string $type, $id): Model
     {
         if (! is_a($type, $this->modelClass, true)) {
-            throw new Exceptions\EntityTypeMismatchException("Invalid type: $type cannot be resolved.");
+            throw new Exceptions\EntityTypeMismatchException("Invalid type: $type cannot be located.");
         }
 
         $attributes = (array) $id;
