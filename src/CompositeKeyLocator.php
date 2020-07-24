@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TTBooking\EntityLocator;
 
 class CompositeKeyLocator implements Contracts\EntityLocator

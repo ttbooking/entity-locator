@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TTBooking\Tests;
 
 use TTBooking\EntityLocator\Exceptions\EntityNotFoundException;

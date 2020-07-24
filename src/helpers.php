@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use TTBooking\EntityLocator\AggregateLocator;
 use TTBooking\EntityLocator\Exceptions\EntityException;
 use TTBooking\EntityLocator\Exceptions\LocatorException;

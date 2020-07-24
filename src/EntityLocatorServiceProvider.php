@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TTBooking\EntityLocator;
 
 use Illuminate\Contracts\Support\DeferrableProvider;

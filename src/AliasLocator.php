@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TTBooking\EntityLocator;
 
 class AliasLocator implements Contracts\EntityLocator

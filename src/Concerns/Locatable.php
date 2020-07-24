@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TTBooking\EntityLocator\Concerns;
 
 use TTBooking\EntityLocator\Exceptions\EntityException;
