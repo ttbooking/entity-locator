@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace TTBooking\Tests;
 
+use PHPUnit\Framework\TestCase;
 use TTBooking\EntityLocator\AliasLocator;
 use TTBooking\EntityLocator\Contracts\EntityLocator;
 use TTBooking\EntityLocator\Exceptions\EntityNotFoundException;
 use TTBooking\EntityLocator\Exceptions\EntityTypeMismatchException;
-use PHPUnit\Framework\TestCase;
 
 class AliasLocatorTest extends TestCase
 {

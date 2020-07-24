@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace TTBooking\Tests;
 
+use PHPUnit\Framework\TestCase;
 use TTBooking\EntityLocator\Exceptions\EntityNotFoundException;
 use TTBooking\EntityLocator\ValidatingLocator;
-use PHPUnit\Framework\TestCase;
 
 class ValidatingLocatorTest extends TestCase
 {
