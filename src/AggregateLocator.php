@@ -25,10 +25,10 @@ class AggregateLocator implements Contracts\EntityLocator
     /**
      * AggregateLocator constructor.
      *
-     * @param Container $container
-     * @param array $locators
-     * @param bool $fallback
-     * @param bool $ancestralOrdering
+     * @param  Container  $container
+     * @param  array  $locators
+     * @param  bool  $fallback
+     * @param  bool  $ancestralOrdering
      */
     public function __construct(
         Container $container,
@@ -78,10 +78,9 @@ class AggregateLocator implements Contracts\EntityLocator
     }
 
     /**
-     * @param array $locatables
-     * @param string $type
-     * @param bool $ordered
-     *
+     * @param  array  $locatables
+     * @param  string  $type
+     * @param  bool  $ordered
      * @return array
      */
     protected static function possibleLocatables(array $locatables, string $type, bool $ordered = false): array
@@ -92,9 +91,8 @@ class AggregateLocator implements Contracts\EntityLocator
     }
 
     /**
-     * @param array $locatables
-     * @param string $type
-     *
+     * @param  array  $locatables
+     * @param  string  $type
      * @return array
      */
     protected static function orderedPossibleLocatables(array $locatables, string $type): array
@@ -111,9 +109,8 @@ class AggregateLocator implements Contracts\EntityLocator
     }
 
     /**
-     * @param array $array
-     * @param callable $callback
-     *
+     * @param  array  $array
+     * @param  callable  $callback
      * @return array[]
      */
     private static function partition(array $array, callable $callback): array

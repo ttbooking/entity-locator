@@ -15,8 +15,8 @@ class CompositeKeyLocator implements Contracts\EntityLocator
     /**
      * CompositeKeyLocator constructor.
      *
-     * @param Contracts\EntityLocator $locator
-     * @param string $delimiter
+     * @param  Contracts\EntityLocator  $locator
+     * @param  string  $delimiter
      */
     public function __construct(Contracts\EntityLocator $locator, string $delimiter = ':')
     {

@@ -10,13 +10,12 @@ use TTBooking\EntityLocator\Exceptions\LocatorException;
 interface EntityLocator
 {
     /**
-     * @param string $type
-     * @param mixed $id
+     * @param  string  $type
+     * @param  mixed  $id
+     * @return object
      *
      * @throws LocatorException
      * @throws EntityException
-     *
-     * @return object
      */
     public function locate(string $type, $id): object;
 }

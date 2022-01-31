@@ -11,12 +11,11 @@ use TTBooking\EntityLocator\Facades\EntityLocator;
 trait Locatable
 {
     /**
-     * @param mixed $address
+     * @param  mixed  $address
+     * @return static
      *
      * @throws LocatorException
      * @throws EntityException
-     *
-     * @return static
      */
     public static function locate($address)
     {

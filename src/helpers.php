@@ -9,8 +9,7 @@ use TTBooking\EntityLocator\Facades\EntityLocator;
 
 if (! function_exists('locator_array')) {
     /**
-     * @param mixed ...$locators
-     *
+     * @param  mixed  ...$locators
      * @return array
      */
     function locator_array(...$locators): array
@@ -21,13 +20,12 @@ if (! function_exists('locator_array')) {
 
 if (! function_exists('locate_entity')) {
     /**
-     * @param string $type
-     * @param mixed $id
+     * @param  string  $type
+     * @param  mixed  $id
+     * @return object
      *
      * @throws LocatorException
      * @throws EntityException
-     *
-     * @return object
      */
     function locate_entity(string $type, $id): object
     {

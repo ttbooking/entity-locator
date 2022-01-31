@@ -20,8 +20,8 @@ class ModelLocator implements Contracts\EntityLocator
     /**
      * ModelLocator constructor.
      *
-     * @param string $entityClass
-     * @param string|string[] $columns
+     * @param  string  $entityClass
+     * @param  string|string[]  $columns
      */
     public function __construct(string $entityClass = Model::class, $columns = [])
     {
@@ -46,7 +46,7 @@ class ModelLocator implements Contracts\EntityLocator
                 : array_combine($this->columns ?: [(new $type)->getKeyName()], $attributes);
 
             return $type::where($attributes)->firstOrFail();
-        } catch (ErrorException | ModelNotFoundException $e) {
+        } catch (ErrorException|ModelNotFoundException $e) {
             throw new Exceptions\EntityNotFoundException("Model $type with given attributes not found.", $e->getCode(), $e);
         }
     }

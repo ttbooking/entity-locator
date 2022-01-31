@@ -15,8 +15,8 @@ class AliasLocator implements Contracts\EntityLocator
     /**
      * AliasLocator constructor.
      *
-     * @param Contracts\EntityLocator $locator
-     * @param string[] $aliases
+     * @param  Contracts\EntityLocator  $locator
+     * @param  string[]  $aliases
      */
     public function __construct(Contracts\EntityLocator $locator, array $aliases = [])
     {
